@@ -1,0 +1,30 @@
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+
+set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
+
+file(GLOB game_server_SRC
+    "*.h"
+    "*.cpp"
+    "*.hpp"
+    "../src/*.h"
+    "../src/*.cpp"
+    "../src/*.hpp"
+)
+
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
+add_executable(game_server main.cpp ${server_SRC})
+
+find_package(OpenMP REQUIRED)
+find_package(Threads REQUIRED)
+find_package(ENet REQUIRED)
+
+include_directories(${OPENMP_INCLUDE_DIRS})
+include_directories(${THREADS_INCLUDE_DIRS})
+include_directories(${EBET_INCLUDE_DIRS})
+
+target_link_libraries(game_server PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} ${ENET_LIBRARIES})
