@@ -11,9 +11,6 @@ file(GLOB game_server_SRC
     "*.h"
     "*.cpp"
     "*.hpp"
-    "../src/*.h"
-    "../src/*.cpp"
-    "../src/*.hpp"
 )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
@@ -27,4 +24,8 @@ include_directories(${OPENMP_INCLUDE_DIRS})
 include_directories(${THREADS_INCLUDE_DIRS})
 include_directories(${EBET_INCLUDE_DIRS})
 
-target_link_libraries(game_server PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} ${ENET_LIBRARIES})
+#My libs
+include_directories(${COMMON_INCLUDE_DIRS})
+include_directories(${CLIENT_INCLUDE_DIRS})
+
+target_link_libraries(game_server PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} ${ENET_LIBRARIES} ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES})
