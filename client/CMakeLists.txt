@@ -13,6 +13,8 @@ file(GLOB client_SRC
     "*.hpp"
 )
 include_directories(${COMMON_INCLUDE_DIRS})
+
+#Create lib
 add_library(client STATIC ${client_SRC})
 set_target_properties(client PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(client PRIVATE ${COMMON_LIBRARIES})
