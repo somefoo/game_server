@@ -1,55 +1,61 @@
-#include "enet/enet.h"
 #include "client.h"
-#include "logger.h"
 #include <string>
+#include "enet/enet.h"
+#include "logger.h"
 
 client::client(void) {
   m_client = enet_host_create(NULL, 1, 2, 0, 0);
-  if (m_client == nullptr){
+  if (m_client == nullptr) {
     logger::info("Could not create host.");
     exit(EXIT_FAILURE);
   }
 }
 
-client::~client(void){
-  //enet cleanup
+client::~client(void) {
+  // enet cleanup
   enet_host_destroy(m_client);
 }
 
-int client::connect(void){
-	if(enet_initialize() != 0){
-		logger::error("An error occurred while initialising server manager.");
-		return 0;	
-	}
-	std::string server_name = "127.0.0.1";
-  m_client = enet_host_create(NULL, 1, 2, 0, 0);
-  if(!m_client){
-    logger::error("Failed to create client.");
-    return 0;
+int client::connect(void) {
+  if (enet_initialize() != 0) {
+    logger::error("An error occurred while initialising server manager.");
+    return 1;
   }
-
+  std::string server_name = "127.0.0.1";
+  m_client = enet_host_create(NULL, 1, 2, 0, 0);
+  if (!m_client) {
+    logger::error("Failed to create client.");
+    return 1;
+  }
 
   ENetAddress address;
   ENetEvent event;
-  ENetPeer *peer;
 
   enet_address_set_host(&address, server_name.data());
   address.port = 1234;
 
-  peer = enet_host_connect(m_client, &address, 2, 0);
-  if(!peer){
-    logger::error("No available peer for initiating connection.");
-    return 0;
+  m_peer = enet_host_connect(m_client, &address, 2, 0);
+  if (!m_peer) {
+    logger::error("No available m_peer for initiating connection.");
+    return 1;
   }
 
   logger::info("Trying to connect to: ", server_name, ":", address.port);
-  if(enet_host_service(m_client, &event, 1000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT){
-    logger::info("Connection succeeded."); 
+  if (enet_host_service(m_client, &event, 1000) > 0 &&
+      event.type == ENET_EVENT_TYPE_CONNECT) {
+    logger::info("Connection succeeded.");
     //...
-  }else{
+  } else {
     logger::error("Connection failed.");
-    enet_peer_reset(peer);
+    enet_peer_reset(m_peer);
   }
 
-  return 1;
+  return 0;
+}
+
+int client::send_reliable(const char* content, const size_t length) const {
+  ENetPacket* packet =
+      enet_packet_create(content, length, ENET_PACKET_FLAG_RELIABLE);
+  enet_peer_send(m_peer, 0, packet);
+  enet_host_flush(m_client);
 }

@@ -16,6 +16,7 @@ void run_server(void){
 
 void run_client(void){
   client_fail = c.connect();
+  c.send_reliable("abc",4);
 }
 
 int main(){

@@ -3,6 +3,10 @@
 #include "server.h"
 #include "logger.h"
 
+void server::kill(void){
+  m_kill = true;
+}
+
 int server::start_server(void) {
   if (enet_initialize() != 0) {
     logger::error("An error occurred while initialising server manager.");
@@ -26,24 +30,19 @@ int server::start_server(void) {
   atexit(enet_deinitialize);
 
   ENetEvent event;
-  while (1) {
+  while (!m_kill) {
     if (enet_host_service(server, &event, 100) > 0) {
       switch (event.type) {
         case ENET_EVENT_TYPE_CONNECT:
-          printf("A new client connected from %x:%u.\n",
-                 event.peer->address.host, event.peer->address.port);
+          logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
 
           /* Store any relevant client information here. */
-          // event.peer->data = "Client information";
+          event.peer->data = m_player1;
 
           break;
 
         case ENET_EVENT_TYPE_RECEIVE:
-          printf(
-              "A packet of length %u containing %s was received from % s on "
-              "channel %u.\n ",
-              event.packet->dataLength, event.packet->data, event.peer->data,
-              event.channelID);
+          logger::info("Packet received from", event.peer->data, " containing:", event.packet->data);
 
           /* Clean up the packet now that we're done using it. */
           enet_packet_destroy(event.packet);
@@ -51,7 +50,8 @@ int server::start_server(void) {
           break;
 
         case ENET_EVENT_TYPE_DISCONNECT:
-          printf("%s disconected.\n", event.peer->data);
+          //printf("%s disconected.\n", event.peer->data);
+          logger::info(event.peer->data, "disconnected.");
 
           /* Reset the peer's client information. */
 
@@ -63,4 +63,5 @@ int server::start_server(void) {
 
   enet_host_destroy(server);
   enet_deinitialize();
+  return 0;
 }
