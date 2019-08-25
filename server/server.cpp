@@ -2,6 +2,30 @@
 #include <iostream>
 #include "server.h"
 #include "logger.h"
+#define RELIABLE_CHANNEL 0
+#define UNRELIABLE_CHANNEL 1
+
+server::server(const uint8_t max_player_count) : m_max_player_count(max_player_count), m_current_player_count(0){
+  m_clients.reserve(max_player_count);
+}
+
+int server::start(const uint16_t port){
+  ENetAddress address;
+  address.host = ENET_HOST_ANY;
+  address.port = port;
+  //enet_address_set_host(&address, "localhost");
+  m_host = enet_host_create(&address, m_max_player_count, 2, 0, 0);
+  if(!m_host){
+    logger::error("Failed to create host on port ", port); 
+    return 1;
+  }
+  return 0;
+}
+
+bool server::is_running(void) const{
+  return m_host != nullptr;
+}
+
 
 void server::kill(void){
   m_kill = true;
