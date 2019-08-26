@@ -5,8 +5,7 @@
 #define RELIABLE_CHANNEL 0
 #define UNRELIABLE_CHANNEL 1
 
-server::server(const uint8_t max_player_count) : m_max_player_count(max_player_count), m_current_player_count(0){
-  m_clients.reserve(max_player_count);
+server::server() : m_current_player_count(0){
 }
 
 int server::start(const uint16_t port){
@@ -14,7 +13,7 @@ int server::start(const uint16_t port){
   address.host = ENET_HOST_ANY;
   address.port = port;
   //enet_address_set_host(&address, "localhost");
-  m_host = enet_host_create(&address, m_max_player_count, 2, 0, 0);
+  m_host = enet_host_create(&address, MAX_PLAYER_COUNT, 2, 0, 0);
   if(!m_host){
     logger::error("Failed to create host on port ", port); 
     return 1;
@@ -59,7 +58,7 @@ int server::start_server(void) {
       switch (event.type) {
         case ENET_EVENT_TYPE_CONNECT:
           logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
-
+          logger::info("Client connect ID: ", event.peer->connectID);
           /* Store any relevant client information here. */
           event.peer->data = m_player1;
 

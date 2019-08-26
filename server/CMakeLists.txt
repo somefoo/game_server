@@ -3,7 +3,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
 
