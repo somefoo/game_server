@@ -72,6 +72,6 @@ struct player_extra_state{
 static constexpr uint16_t get_type(const uint8_t * data, size_t length){
   if(length < sizeof(uint16_t)) return ERROR;
   //TODO Do checking if correct
-  const uint16_t* r = reinterpret_cast<const uint16_t*>(data);
-  return *r;
+  const uint16_t * const ret = reinterpret_cast<const uint16_t*>(data);
+  return *ret;
 }
