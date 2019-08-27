@@ -35,6 +35,8 @@ class player_state_manager{
 
   private:
   uint8_t m_current_count = 0;
+  //We can't use std::array as we are doing some array magic
+  //we don't have std::span yet
   player_runtime_data m_runtime_data[N]{0};
     
 };

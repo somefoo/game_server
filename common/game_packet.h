@@ -1,6 +1,8 @@
 #pragma once
 #include "game_math.h"
 #include <stdint.h>
+#include <cstring>
+#define ERROR 1
 #define PLAYER_STATE 130
 #define ALL_PLAYER_STATE 130
 #define PLAYER_STATE_START 1024
@@ -38,7 +40,6 @@ struct packet {
 #define RUNTIME_STATE_START 2048
 #define RUNTIME_EXTRA_START 3072
 
-
 struct player_runtime_data {
   uint8_t m_player_id;
   fvec2 m_position;
@@ -65,3 +66,12 @@ struct player_extra_state{
   uint16_t m_type = RUNTIME_STATE_START + N - 1; 
   player_extra_data m_player_extra_data[N];
 };
+
+//////////////// EXTRA ////////////////////////
+
+static constexpr uint16_t get_type(const uint8_t * data, size_t length){
+  if(length < sizeof(uint16_t)) return ERROR;
+  //TODO Do checking if correct
+  const uint16_t* r = reinterpret_cast<const uint16_t*>(data);
+  return *r;
+}

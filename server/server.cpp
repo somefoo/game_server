@@ -60,12 +60,13 @@ int server::start_server(void) {
           logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
           logger::info("Client connect ID: ", event.peer->connectID);
           /* Store any relevant client information here. */
-          event.peer->data = m_player1;
+          //event.peer->data = m_player1;
 
           break;
 
         case ENET_EVENT_TYPE_RECEIVE:
           logger::info("Packet received from", event.peer->data, " containing:", event.packet->data);
+          logger::info("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
 
           /* Clean up the packet now that we're done using it. */
           enet_packet_destroy(event.packet);
