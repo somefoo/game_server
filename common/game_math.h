@@ -33,6 +33,7 @@ struct fvec2 {
   fvec2& operator*=(const float m){
     x = x*m;
     y = y*m;
+    return *this;
   }
   bool operator==(const fvec2& a) const { return (x == a.x && y == a.y); }
 };
