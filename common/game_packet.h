@@ -3,9 +3,10 @@
 #include <stdint.h>
 #include <cstring>
 #include <optional>
+#include "logger.h"
 #define ERROR 1
 #define PLAYER_ACTION 130
-#define ALL_PLAYER_STATE 130
+#define ALL_PLAYER_STATE 131
 #define PLAYER_STATE_START 1024
 
 //////////////// CLIENT -> SERVER ////////////////////////
@@ -36,12 +37,12 @@ struct player_action {
 #define RUNTIME_EXTRA_START 3072
 
 struct player_runtime_data {
-  uint8_t m_player_id;
-  fvec2 m_position;
-  float m_turret_angle;
-  uint8_t m_life;
-  uint8_t m_current_projectiles;
-  uint8_t m_kills;
+  uint8_t m_player_id = 0;
+  fvec2 m_position = 0;
+  float m_turret_angle = 0.0f;
+  uint8_t m_life = 0;
+  uint8_t m_current_projectiles = 0;
+  uint8_t m_kills = 0;
 };
 
 struct player_extra_data {
@@ -84,8 +85,8 @@ static constexpr uint16_t get_type(const uint8_t * data, size_t length){
 
 template<typename T>
 static constexpr T* interpret_as_packet(const uint8_t * data, size_t length){
-  if(get_type(data, length) == T::PACKET_TYPE && length == sizeof(T) - sizeof(uint16_t)){
-    return reinterpret_cast<T*>(data + sizeof(uint16_t)); 
+  if(get_type(data, length) == T::PACKET_TYPE && length == sizeof(packet<T>)){
+    return reinterpret_cast<T*>(data + sizeof(packet<T>) - sizeof(T)); 
   }
   return nullptr;
 }

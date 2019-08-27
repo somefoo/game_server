@@ -53,6 +53,7 @@ int server::start_server(void) {
   atexit(enet_deinitialize);
 
   ENetEvent event;
+  const player_action* pa;
   while (!m_kill) {
     if (enet_host_service(server, &event, 100) > 0) {
       switch (event.type) {
@@ -60,14 +61,28 @@ int server::start_server(void) {
           logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
           logger::info("Client connect ID: ", event.peer->connectID);
           /* Store any relevant client information here. */
-          //event.peer->data = m_player1;
+          event.peer->data = m_player1;
 
           break;
 
         case ENET_EVENT_TYPE_RECEIVE:
-          logger::info("Packet received from", event.peer->data, " containing:", event.packet->data);
+          logger::info("Packet received from peer with ID: ", event.peer->connectID);
           logger::info("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
-
+          pa = interpret_as_packet<const player_action>(event.packet->data, event.packet->dataLength);
+          if(pa){
+            logger::info("PktRcvd: ",
+                std::to_string(pa->m_player_id),
+                " ",
+                std::to_string(pa->m_move_strength),
+                " ",
+                std::to_string(pa->m_turret_turn_degree),
+                " ",
+                std::to_string(pa->m_move_strength),
+                " ",
+                std::to_string(pa->m_shoot));
+          }else{
+            logger::info("Received packet which was not a player_action packet.");
+          }
           /* Clean up the packet now that we're done using it. */
           enet_packet_destroy(event.packet);
 
@@ -80,6 +95,9 @@ int server::start_server(void) {
           /* Reset the peer's client information. */
 
           event.peer->data = NULL;
+          break;
+        case ENET_EVENT_TYPE_NONE:
+          break;
       }
     }
     // Break if something happens HERE!!

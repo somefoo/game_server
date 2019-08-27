@@ -18,9 +18,9 @@ void run_server(void){
 void run_client(void){
   client_fail = c.connect();
  
-  packet<player_action> pss(0, 3.14f, 2.14f, 127,1);
+  packet<player_action> pss(2, 3.14f, 2.14f, 127,1);
 
-  client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(player_state));
+  client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(pss));
 }
 
 int main(){

@@ -10,17 +10,17 @@ class player_state_manager{
   public:
   constexpr player_state_manager() = default;
   //constexpr get_players_runtime_state() const;
-  void update(const action& a, const uint8_t player_id){
-    assert(player_id < N);
+  void update(const player_action& a){
+    assert(a.m_player_id < N);
     player_runtime_data& p = m_runtime_data[N]; 
-    const float dis_delta = 255.0f / float(a.move_strength);
-    const float pos_delta_x = std::cos(a.move_direction) * dis_delta;
-    const float pos_delta_y = std::sin(a.move_direction) * dis_delta;
+    const float dis_delta = 255.0f / float(a.m_move_strength);
+    const float pos_delta_x = std::cos(a.m_move_direction) * dis_delta;
+    const float pos_delta_y = std::sin(a.m_move_direction) * dis_delta;
     const fvec2 pos_delta{pos_delta_x, pos_delta_y}; 
 
     //TODO realsitic check here
     p.m_position += pos_delta;
-    p.m_turret_angle += a.turret_turn_degree;
+    p.m_turret_angle += a.m_turret_turn_degree;
   }
 
   constexpr std::pair<uint8_t, const player_runtime_data * const> get_runtime_data(void){
