@@ -3,6 +3,7 @@
 #include <chrono>
 #include "client.h"
 #include "server.h"
+#include "game_packet.h"
 
 int server_fail = 0;
 int client_fail = 0;
@@ -16,7 +17,10 @@ void run_server(void){
 
 void run_client(void){
   client_fail = c.connect();
-  c.send_reliable("abc",4);
+ 
+  packet<player_action> pss(0, 3.14f, 2.14f, 127,1);
+
+  client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(player_state));
 }
 
 int main(){
