@@ -58,4 +58,5 @@ int client::send_reliable(const char* content, const size_t length) const {
       enet_packet_create(content, length, ENET_PACKET_FLAG_RELIABLE);
   enet_peer_send(m_peer, 0, packet);
   enet_host_flush(m_client);
+  return 0;
 }

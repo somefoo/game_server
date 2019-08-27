@@ -4,7 +4,7 @@ endif()
 
 
 set (CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -Wall -Wextra -Werror -Wno-unused-private-field")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
 
 file(GLOB client_SRC
