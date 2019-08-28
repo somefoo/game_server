@@ -66,8 +66,8 @@ int server::start_server(void) {
           break;
 
         case ENET_EVENT_TYPE_RECEIVE:
-          logger::info("Packet received from peer with ID: ", event.peer->connectID);
-          logger::info("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
+          logger::verbose("Packet received from peer with ID: ", event.peer->connectID);
+          logger::verbose("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
           pa = interpret_as_packet<const player_action>(event.packet->data, event.packet->dataLength);
           if(pa){
             m_player_manager.update(*pa);

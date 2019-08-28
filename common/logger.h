@@ -30,6 +30,15 @@ void log(const T& t, const Args&... args)  // recursive variadic function
 
 template <typename T, typename... Args>
 //TODO comment
+void verbose(const T& t, const Args&... args)
+{
+  std::cout << green << "[VERBOSE] ";
+
+  log(t, args...);
+}
+
+template <typename T, typename... Args>
+//TODO comment
 void info(const T& t, const Args&... args)
 {
   std::cout << white << "[INFO]    ";

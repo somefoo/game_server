@@ -19,10 +19,10 @@ class player_state_manager{
     const fvec2 pos_delta{pos_delta_x, pos_delta_y}; 
 
     //TODO realsitic check here
-    logger::info("o_Player", std::to_string(a.m_player_id), "= (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
+    logger::verbose("o_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
     p.m_position += pos_delta;
     p.m_turret_angle += a.m_turret_turn_degree;
-    logger::info("n_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
+    logger::verbose("n_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
   }
 
   constexpr std::pair<uint8_t, const player_runtime_data * const> get_runtime_data(void){
