@@ -70,16 +70,7 @@ int server::start_server(void) {
           logger::info("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
           pa = interpret_as_packet<const player_action>(event.packet->data, event.packet->dataLength);
           if(pa){
-            logger::info("PktRcvd: ",
-                std::to_string(pa->m_player_id),
-                " ",
-                std::to_string(pa->m_move_strength),
-                " ",
-                std::to_string(pa->m_turret_turn_degree),
-                " ",
-                std::to_string(pa->m_move_strength),
-                " ",
-                std::to_string(pa->m_shoot));
+            m_player_manager.update(*pa);
           }else{
             logger::info("Received packet which was not a player_action packet.");
           }

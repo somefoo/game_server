@@ -17,10 +17,15 @@ void run_server(void){
 
 void run_client(void){
   client_fail = c.connect();
- 
-  packet<player_action> pss(2, 3.14f, 2.14f, 127,1);
+  for(int i = 0; i < 32; ++i){
+    packet<player_action> pss(i, 3.14f, 2.14f, 127,1);
+    client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(pss));
+  }
 
-  client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(pss));
+  for(int i = 0; i < 32; ++i){
+    packet<player_action> pss(i, 24.12f, 45.14f, 255,0);
+    client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(pss));
+  }
 }
 
 int main(){
