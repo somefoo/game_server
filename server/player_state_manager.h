@@ -26,7 +26,7 @@ class player_state_manager{
   }
 
   constexpr std::pair<uint8_t, const player_runtime_data * const> get_runtime_data(void){
-    return std::make_pair<uint8_t, const player_runtime_data *  const>(3, m_runtime_data); 
+    return std::make_pair(m_current_count, &(m_runtime_data[0])); 
   }
 
   constexpr uint8_t add_player(void){

@@ -16,8 +16,9 @@ int server::start(const uint16_t port){
   m_host = enet_host_create(&address, MAX_PLAYER_COUNT, 2, 0, 0);
   if(!m_host){
     logger::error("Failed to create host on port ", port); 
-    return 1;
+    return EXIT_FAILURE;
   }
+  logger::info("Created server on ", address.host, ":", address.port);
   return 0;
 }
 
@@ -37,25 +38,14 @@ int server::start_server(void) {
   }
   logger::info("Server manager initilised.");
 
-  ENetAddress address;
-  ENetHost *server;
-  address.host = ENET_HOST_ANY;
-  address.port = 1234;
-  server = enet_host_create(&address, 32, 2, 0, 0);
+  start(1234);
 
-  if (!server) {
-    logger::error("An error occurred while initialising server.");
-    logger::error("Failed to create server on ", address.host, ":",
-                  address.port);
-    return EXIT_FAILURE;
-  }
-  logger::info("Created server on ", address.host, ":", address.port);
-  atexit(enet_deinitialize);
+  //atexit(enet_deinitialize);
 
   ENetEvent event;
   const player_action* pa;
   while (!m_kill) {
-    if (enet_host_service(server, &event, 100) > 0) {
+    if (enet_host_service(m_host, &event, 100) > 0) {
       switch (event.type) {
         case ENET_EVENT_TYPE_CONNECT:
           logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
@@ -94,7 +84,17 @@ int server::start_server(void) {
     // Break if something happens HERE!!
   }
 
-  enet_host_destroy(server);
+  enet_host_destroy(m_host);
   enet_deinitialize();
+  return 0;
+}
+
+int server::broadcast_state(void){
+  auto [size, data] = m_player_manager.get_runtime_data();
+  ENetPacket* packet =
+      enet_packet_create(data, size, ENET_PACKET_FLAG_RELIABLE);
+  enet_host_broadcast(m_host, 0, packet);
+  enet_host_flush(m_host);
+  //SEND AND FLUSH
   return 0;
 }
