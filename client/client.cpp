@@ -1,6 +1,7 @@
 #include "client.h"
 #include <string>
 #include "enet/enet.h"
+#include "game_packet.h"
 #include "logger.h"
 
 client::client(void) {
@@ -60,3 +61,28 @@ int client::send_reliable(const char* content, const size_t length) const {
   enet_host_flush(m_client);
   return 0;
 }
+int client::poll(void){
+  ENetEvent event;
+  const player_runtime_state<32>* prs;
+  if(enet_host_service(m_client, &event, 0) > 0){
+    switch(event.type){
+      case ENET_EVENT_TYPE_RECEIVE:
+        logger::verbose("I received a packed!");
+        prs = interpret_as_packet<const player_runtime_state<32>>(event.packet->data, event.packet->dataLength);
+        if(prs){
+          logger::verbose("CLIENT: Received packet was player_runtime_state<32>"); 
+        }else{
+          logger::verbose("CLIENT: Received packet was NOT of expected type");
+          logger::verbose("CLIENT:   Received packed was of type:", get_type(event.packet->data, event.packet->dataLength));
+          logger::verbose("CLIENT:   But ", player_runtime_state<32>::PACKET_TYPE, " was expected.");
+        }
+        enet_packet_destroy(event.packet);
+        break;
+      default:
+        break;
+
+    }
+  }
+  return 0;
+}
+

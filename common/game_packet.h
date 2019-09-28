@@ -59,7 +59,6 @@ struct player_runtime_state{
 
 template <uint8_t N>
 struct player_extra_state{
-  uint16_t m_type = RUNTIME_STATE_START + N - 1; 
   constexpr const static uint16_t PACKET_TYPE = RUNTIME_EXTRA_START + N - 1;
   player_extra_data m_player_extra_data[N];
 };

@@ -12,7 +12,7 @@ class player_state_manager{
   //constexpr get_players_runtime_state() const;
   void update(const player_action& a){
     assert(a.m_player_id < N);
-    player_runtime_data& p = m_runtime_data[a.m_player_id]; 
+    player_runtime_data& p = m_runtime_state.m_player_runtime_data[a.m_player_id]; 
     const float dis_delta = float(a.m_move_strength) / 255.0f;
     const float pos_delta_x = std::cos(a.m_move_direction) * dis_delta;
     const float pos_delta_y = std::sin(a.m_move_direction) * dis_delta;
@@ -25,13 +25,13 @@ class player_state_manager{
     logger::verbose("n_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
   }
 
-  constexpr std::pair<uint8_t, const player_runtime_data * const> get_runtime_data(void){
-    return std::make_pair(m_current_count, &(m_runtime_data[0])); 
+  constexpr std::pair<uint8_t, const packet<player_runtime_state<N>>*> get_runtime_state(void){
+    return std::make_pair(m_current_count, &m_runtime_state_packet); 
   }
 
   constexpr uint8_t add_player(void){
     assert(m_current_count < N - 1);
-    m_runtime_data[m_current_count].m_player_id = m_current_count;
+    m_runtime_state.m_player_runtime_data[m_current_count].m_player_id = m_current_count;
     return m_current_count++; 
   }
 
@@ -39,6 +39,7 @@ class player_state_manager{
   uint8_t m_current_count = 0;
   //We can't use std::array as we are doing some array magic
   //we don't have std::span yet
-  player_runtime_data m_runtime_data[N]{0};
+  packet<player_runtime_state<N>> m_runtime_state_packet;
+  player_runtime_state<N> &m_runtime_state = m_runtime_state_packet.m_packet;
     
 };

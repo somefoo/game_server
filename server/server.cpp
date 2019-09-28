@@ -2,6 +2,7 @@
 #include <iostream>
 #include "server.h"
 #include "logger.h"
+#include "game_packet.h"
 #define RELIABLE_CHANNEL 0
 #define UNRELIABLE_CHANNEL 1
 
@@ -90,10 +91,11 @@ int server::start_server(void) {
 }
 
 int server::broadcast_state(void){
-  auto [size, data] = m_player_manager.get_runtime_data();
-  ENetPacket* packet =
-      enet_packet_create(data, size, ENET_PACKET_FLAG_RELIABLE);
-  enet_host_broadcast(m_host, 0, packet);
+  auto [count, data] = m_player_manager.get_runtime_state();
+  //TODO remove fixed player count (MAX_PLAYER_COUNT)
+  ENetPacket* enet_packet =
+      enet_packet_create(data, sizeof(packet<player_runtime_state<MAX_PLAYER_COUNT>>), ENET_PACKET_FLAG_RELIABLE);
+  enet_host_broadcast(m_host, 0, enet_packet);
   enet_host_flush(m_host);
   //SEND AND FLUSH
   return 0;

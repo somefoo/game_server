@@ -7,6 +7,7 @@ class client{
   ~client(void);
   int connect(void);
   int send_reliable(const char* content, const size_t length) const;
+  int poll(void);
   private:
     ENetHost *m_client;
   	ENetPeer *m_peer;
