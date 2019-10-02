@@ -18,8 +18,8 @@ target_link_libraries(connection_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBR
 add_test(Connection_Test connection_test)
 
 
-add_executable(send_Packet_test send_packet_test.cpp)
-target_link_libraries(send_Packet_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
+add_executable(send_packet_test send_packet_test.cpp)
+target_link_libraries(send_packet_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
 add_test(Send_Packet_Test send_packet_test)
 
 
