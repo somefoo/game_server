@@ -21,7 +21,7 @@ find_package(ENet REQUIRED)
 
 include_directories(${OPENMP_INCLUDE_DIRS})
 include_directories(${THREADS_INCLUDE_DIRS})
-include_directories(${EBET_INCLUDE_DIRS})
+include_directories(${ENET_INCLUDE_DIRS})
 #My libs
 include_directories(${COMMON_INCLUDE_DIRS})
 include_directories(${CLIENT_INCLUDE_DIRS})
