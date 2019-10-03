@@ -26,3 +26,8 @@ add_test(Send_Packet_Test send_packet_test)
 add_executable(poll_test poll_test.cpp)
 target_link_libraries(poll_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
 add_test(Poll_Test poll_test)
+
+
+#NOT A TEST
+add_executable(start_server start_server.cpp)
+target_link_libraries(start_server PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
