@@ -82,6 +82,8 @@ int server::start_server(void) {
           break;
       }
     }
+    //TEMP SOLUTION
+    broadcast_state();
     // Break if something happens HERE!!
   }
 
