@@ -15,12 +15,12 @@ file(GLOB client_SRC
 
 #find_package(ENet REQUIRED)
 
-include_directories(${COMMON_INCLUDE_DIRS})
-include_directories(${CENET_INCLUDE_DIRS})
 message(STATUS ${CENET_LIBRARIES})
 #Create lib
 add_library(client STATIC ${client_SRC})
 set_target_properties(client PROPERTIES LINKER_LANGUAGE CXX)
+target_include_directories(client PRIVATE ${COMMON_INCLUDE_DIRS})
+target_include_directories(client PRIVATE ${CENET_INCLUDE_DIRS})
 target_link_libraries(client PRIVATE ${CENET_LIBRARIES} ${COMMON_LIBRARIES})
 
 #External view

@@ -12,7 +12,7 @@ if(UNIX)
 endif(UNIX)
 
 if(MSVC OR MSYS OR MINGW OR WIN32)
-  set(CENET_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}lib/enet/enet.lib")
+  set(CENET_LIBRARIES "${CMAKE_CURRENT_LIST_DIR}/lib/enet/enet.lib")
 endif(MSVC OR MSYS OR MINGW OR WIN32)
 
 if(APPLE)

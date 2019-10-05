@@ -18,17 +18,18 @@ file(GLOB server_SRC
 find_package(OpenMP REQUIRED)
 find_package(Threads REQUIRED)
 
-include_directories(${OPENMP_INCLUDE_DIRS})
-include_directories(${THREADS_INCLUDE_DIRS})
-#My libs
-include_directories(${COMMON_INCLUDE_DIRS})
-include_directories(${CLIENT_INCLUDE_DIRS})
-include_directories(${CENET_INCLUDE_DIRS})
 
 #Create lib
 add_library(server STATIC ${server_SRC})
 set_target_properties(server PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(server PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} ${CENET_LIBRARIES} ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES})
+
+target_include_directories(server PRIVATE ${OPENMP_INCLUDE_DIRS})
+target_include_directories(server PRIVATE ${THREADS_INCLUDE_DIRS})
+#My libs
+target_include_directories(server PRIVATE ${COMMON_INCLUDE_DIRS})
+target_include_directories(server PRIVATE ${CLIENT_INCLUDE_DIRS})
+target_include_directories(server PRIVATE ${CENET_INCLUDE_DIRS})
 
 #External view
 set(SERVER_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR} PARENT_SCOPE)
