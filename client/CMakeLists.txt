@@ -13,15 +13,15 @@ file(GLOB client_SRC
     "*.hpp"
 )
 
-find_package(ENet REQUIRED)
+#find_package(ENet REQUIRED)
 
 include_directories(${COMMON_INCLUDE_DIRS})
-include_directories(${ENET_INCLUDE_DIRS})
-
+include_directories(${CENET_INCLUDE_DIRS})
+message(STATUS ${CENET_LIBRARIES})
 #Create lib
 add_library(client STATIC ${client_SRC})
 set_target_properties(client PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(client PRIVATE ${ENET_LIBRARIES} ${COMMON_LIBRARIES})
+target_link_libraries(client PRIVATE ${CENET_LIBRARIES} ${COMMON_LIBRARIES})
 
 #External view
 set(CLIENT_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR} PARENT_SCOPE)
