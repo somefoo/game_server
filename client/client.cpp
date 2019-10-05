@@ -23,7 +23,7 @@ int client::connect(void) {
     logger::error("An error occurred while initialising server manager.");
     return 1;
   }
-  std::string server_name = "127.0.0.1";
+  std::string server_name = "pserver.cloud";
   m_client = enet_host_create(NULL, 1, 2, 0, 0);
   if (!m_client) {
     logger::error("Failed to create client.");
