@@ -4,7 +4,7 @@
 #include <cstring>
 #include <optional>
 #include "logger.h"
-#define ERROR 1
+#define PACKET_ERROR 1
 #define PLAYER_ACTION 130
 #define ALL_PLAYER_STATE 131
 #define PLAYER_STATE_START 1024
@@ -76,7 +76,7 @@ struct packet {
 };       
 
 static constexpr uint16_t get_type(const uint8_t * data, size_t length){
-  if(length < sizeof(uint16_t)) return ERROR;
+  if(length < sizeof(uint16_t)) return PACKET_ERROR;
   //TODO Do checking if correct
   const uint16_t * const ret = reinterpret_cast<const uint16_t*>(data);
   return *ret;
