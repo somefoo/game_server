@@ -20,8 +20,8 @@ message(STATUS ${CENET_INCLUDE_DIRS})
 add_library(client STATIC ${client_SRC})
 set_target_properties(client PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(client PUBLIC ${COMMON_INCLUDE_DIRS})
-target_include_directories(client PUBLIC ${CENET_INCLUDE_DIRS})
-target_link_libraries(client PUBLIC ${CENET_LIBRARIES} ${COMMON_LIBRARIES})
+target_include_directories(client PUBLIC enet)
+target_link_libraries(client PUBLIC enet ${COMMON_LIBRARIES})
 
 #External view
 set(CLIENT_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR} PARENT_SCOPE)
