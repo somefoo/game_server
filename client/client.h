@@ -1,6 +1,6 @@
 #pragma once
-#include "enet/enet.h"
-#include "game_packet.h"
+#include <enet/enet.h>
+#include <game_packet.h>
 //http://lists.cubik.org/pipermail/enet-discuss/2010-January/001308.html
 class client{
   public:

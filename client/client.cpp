@@ -1,6 +1,6 @@
 #include "client.h"
 #include <string>
-#include "enet/enet.h"
+#include <enet/enet.h>
 #include "game_packet.h"
 #include "logger.h"
 #include <cstring>
