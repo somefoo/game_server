@@ -27,4 +27,4 @@ add_test(Poll_Test poll_test)
 #NOT A TEST
 add_executable(start_server start_server.cpp)
 target_link_libraries(start_server PRIVATE ${THREADS_LIBRARIES} common server client)
-endif(LINUX)
+endif(UNIX)
