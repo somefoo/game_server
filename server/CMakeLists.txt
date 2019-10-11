@@ -26,8 +26,5 @@ target_include_directories(server PUBLIC ${OPENMP_INCLUDE_DIRS})
 target_include_directories(server PUBLIC ${THREADS_INCLUDE_DIRS})
 #My libs
 target_include_directories(server PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_include_directories(server PRIVATE common)
-target_include_directories(server PRIVATE client)
-target_include_directories(server PRIVATE enet)
 
 target_link_libraries(server PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} enet common client)

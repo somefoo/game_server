@@ -9,10 +9,6 @@ set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
 
-include_directories(common)
-include_directories(server)
-include_directories(client)
-
 add_executable(connection_test connection_test.cpp)
 target_link_libraries(connection_test PRIVATE ${THREADS_LIBRARIES} common server client)
 add_test(Connection_Test connection_test)
