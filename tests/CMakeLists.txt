@@ -2,12 +2,12 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-
+#POSIX threads have trouble in these envs. test on linux only!
+if(LINUX)
+message(STATUS "Building tests...")
 set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
-
-find_package(Threads REQUIRED)
 
 include_directories(common)
 include_directories(server)
@@ -31,3 +31,4 @@ add_test(Poll_Test poll_test)
 #NOT A TEST
 add_executable(start_server start_server.cpp)
 target_link_libraries(start_server PRIVATE ${THREADS_LIBRARIES} common server client)
+endif(LINUX)
