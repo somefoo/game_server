@@ -3,7 +3,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 #POSIX threads have trouble in these envs. test on linux only!
-if(LINUX)
+if(UNIX)
 message(STATUS "Building tests...")
 set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
