@@ -9,25 +9,25 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra")
 
 find_package(Threads REQUIRED)
 
-include_directories(${COMMON_INCLUDE_DIRS})
-include_directories(${SERVER_INCLUDE_DIRS})
-include_directories(${CLIENT_INCLUDE_DIRS})
+include_directories(common)
+include_directories(server)
+include_directories(client)
 
 add_executable(connection_test connection_test.cpp)
-target_link_libraries(connection_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
+target_link_libraries(connection_test PRIVATE ${THREADS_LIBRARIES} common server client)
 add_test(Connection_Test connection_test)
 
 
 add_executable(send_packet_test send_packet_test.cpp)
-target_link_libraries(send_packet_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
+target_link_libraries(send_packet_test PRIVATE ${THREADS_LIBRARIES} common server client)
 add_test(Send_Packet_Test send_packet_test)
 
 
 add_executable(poll_test poll_test.cpp)
-target_link_libraries(poll_test PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
+target_link_libraries(poll_test PRIVATE ${THREADS_LIBRARIES} common server client)
 add_test(Poll_Test poll_test)
 
 
 #NOT A TEST
 add_executable(start_server start_server.cpp)
-target_link_libraries(start_server PRIVATE ${THREADS_LIBRARIES} ${COMMON_LIBRARIES} ${SERVER_LIBRARIES} ${CLIENT_LIBRARIES})
+target_link_libraries(start_server PRIVATE ${THREADS_LIBRARIES} common server client)
