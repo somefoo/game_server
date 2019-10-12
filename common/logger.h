@@ -1,8 +1,13 @@
 #pragma once
+#define INFO
 #include <initializer_list>
 #include <iostream>
 #include <string>
 // TODO do isaty(3) test?
+
+//We can't void cast the args... argument, so we this nifty #pragma directive
+#pragma GCC diagnostic push 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 namespace logger {
 namespace {
 const std::string rest = "\x1B[0m";
@@ -32,35 +37,43 @@ template <typename T, typename... Args>
 //TODO comment
 void verbose(const T& t, const Args&... args)
 {
+#if defined(VERBOSE)
   std::cout << green << "[VERBOSE] ";
 
   log(t, args...);
+#endif 
 }
 
 template <typename T, typename... Args>
 //TODO comment
 void info(const T& t, const Args&... args)
 {
+#if defined(VERBOSE) || defined(INFO)
   std::cout << white << "[INFO]    ";
 
   log(t, args...);
+#endif
 }
 
 template <typename T, typename... Args>
 //TODO comment
 void warning(const T& t, const Args&... args)
 {
+#if defined(VERBOSE) || defined(INFO) || defined(WARNING)
   std::cout << yellow << "[WARNING] ";
 
   log(t, args...);
+#endif
 }
 
 template <typename T, typename... Args>
 //TODO comment
 void error(const T& t, const Args&... args) 
 {
+#if defined(VERBOSE) || defined(INFO) || defined(WARNING) || defined(ERROR)
   std::cout << red << "[ERROR]   ";
 
-  log(t, args...);
+#endif
 }
 }
+#pragma GCC diagnostic pop
