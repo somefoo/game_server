@@ -4,6 +4,7 @@
 #include "game_packet.h"
 #include <cassert>
 #include <cmath>
+#define MAX_PLAYER_COUNT 32
 //WARNING, NOT THREAD SAFE
 //The idea is as following, each client and server holds one of these Objects.
 //There are two methods to alter the state of the game:
@@ -22,19 +23,29 @@ class global_player_state{
     const float pos_delta_y = std::sin(a.m_move_direction) * dis_delta;
     const fvec2 pos_delta{pos_delta_x, pos_delta_y}; 
 
-    //TODO realsitic check here
+    //TODO realistic check here
     logger::verbose("o_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
     p.m_position += pos_delta;
     p.m_turret_angle += a.m_turret_turn_degree;
     logger::verbose("n_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
   }
   
-  void set(const packet<const player_runtime_state<N>>* const runtime_state_packet){
+  void set_data(const player_runtime_state<N>* const runtime_state_data){
+    std::memcpy(&m_runtime_state.m_player_runtime_data, runtime_state_data, sizeof(const player_runtime_state<N>));
+  }
+
+  void set_packet(const packet<const player_runtime_state<N>>* const runtime_state_packet){
     std::memcpy(&m_runtime_state, runtime_state_packet, sizeof(packet<const player_runtime_state<N>>));
   }
 
-  constexpr std::pair<uint8_t, const packet<player_runtime_state<N>>*> get_runtime_state(void){
+  //TODO Change name; remove runtime
+  constexpr std::pair<uint8_t, const packet<player_runtime_state<N>>*> get_state_packet(void) const{
     return std::make_pair(m_current_count, &m_runtime_state_packet); 
+  }
+
+  constexpr const player_runtime_state<N>* get_state(void) const{
+    //return nullptr;
+    return &(m_runtime_state); 
   }
 
   constexpr uint8_t add_player(void){

@@ -93,7 +93,7 @@ int server::start_server(void) {
 }
 
 int server::broadcast_state(void){
-  auto [count, data] = m_player_manager.get_runtime_state();
+  auto [count, data] = m_player_manager.get_state_packet();
   //TODO remove fixed player count (MAX_PLAYER_COUNT)
   ENetPacket* enet_packet =
       enet_packet_create(data, sizeof(packet<player_runtime_state<MAX_PLAYER_COUNT>>), ENET_PACKET_FLAG_RELIABLE);

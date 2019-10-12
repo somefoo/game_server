@@ -1,6 +1,7 @@
 #pragma once
 #include <enet/enet.h>
 #include <game_packet.h>
+#include <global_player_state.h>
 //http://lists.cubik.org/pipermail/enet-discuss/2010-January/001308.html
 class client{
   public:
@@ -8,9 +9,10 @@ class client{
   ~client(void);
   int connect(void);
   int send_reliable(const char* content, const size_t length) const;
-  int poll(player_runtime_state<32>* prs);
+  int poll_state(void);
+  const player_runtime_state<MAX_PLAYER_COUNT>* get_state(void) const;
   private:
     ENetHost *m_client;
   	ENetPeer *m_peer;
-
+    global_player_state<MAX_PLAYER_COUNT> m_player_manager;
 };

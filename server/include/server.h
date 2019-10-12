@@ -2,8 +2,7 @@
 #include <string>
 #include <enet/enet.h>
 #include <vector>
-#include "player_state_manager.h"
-#define MAX_PLAYER_COUNT 32
+#include <global_player_state.h>
 class server{
   public:
     server();
@@ -18,7 +17,7 @@ class server{
 
     uint8_t m_current_player_count;
     mutable uint32_t current_message_id; //Enable mutation in const functions
-    player_state_manager<MAX_PLAYER_COUNT> m_player_manager;
+    global_player_state<MAX_PLAYER_COUNT> m_player_manager;
 
 
     bool m_kill = false;
