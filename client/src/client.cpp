@@ -50,6 +50,7 @@ int client::connect(void) {
   } else {
     logger::error("Connection failed.");
     enet_peer_reset(m_peer);
+    return 1;
   }
 
   return 0;
