@@ -83,7 +83,7 @@ int server::start_server(void) {
       }
     }
     //TEMP SOLUTION
-    broadcast_state();
+    broadcast_state_fast();
     // Break if something happens HERE!!
   }
 
@@ -92,11 +92,22 @@ int server::start_server(void) {
   return 0;
 }
 
-int server::broadcast_state(void){
+int server::broadcast_state_reliable(void){
   auto [count, data] = m_player_manager.get_state_packet();
   //TODO remove fixed player count (MAX_PLAYER_COUNT)
   ENetPacket* enet_packet =
       enet_packet_create(data, sizeof(packet<player_runtime_state<MAX_PLAYER_COUNT>>), ENET_PACKET_FLAG_RELIABLE);
+  enet_host_broadcast(m_host, 0, enet_packet);
+  enet_host_flush(m_host);
+  //SEND AND FLUSH
+  return 0;
+}
+
+int server::broadcast_state_fast(void){
+  auto [count, data] = m_player_manager.get_state_packet();
+  //TODO remove fixed player count (MAX_PLAYER_COUNT)
+  ENetPacket* enet_packet =
+      enet_packet_create(data, sizeof(packet<player_runtime_state<MAX_PLAYER_COUNT>>), 0);
   enet_host_broadcast(m_host, 0, enet_packet);
   enet_host_flush(m_host);
   //SEND AND FLUSH

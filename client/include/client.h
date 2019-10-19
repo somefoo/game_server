@@ -9,6 +9,7 @@ class client{
   ~client(void);
   int connect(void);
   int send_reliable(const char* content, const size_t length) const;
+  int send_fast(const char* content, const size_t length) const;
   int poll_state(void);
   const player_runtime_state<MAX_PLAYER_COUNT>* get_state(void) const;
   private:

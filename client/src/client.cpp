@@ -63,6 +63,15 @@ int client::send_reliable(const char* content, const size_t length) const {
   enet_host_flush(m_client);
   return 0;
 }
+
+int client::send_fast(const char* content, const size_t length) const {
+  ENetPacket* packet =
+      enet_packet_create(content, length, 0);
+  enet_peer_send(m_peer, 0, packet);
+  enet_host_flush(m_client);
+  return 0;
+}
+
 int client::poll_state(){
   ENetEvent event;
   const player_runtime_state<MAX_PLAYER_COUNT>* tmp; 

@@ -35,7 +35,7 @@ int main(){
   std::this_thread::sleep_for(std::chrono::milliseconds(10));
   
 
-  s.broadcast_state();
+  s.broadcast_state_fast();
   std::this_thread::sleep_for(std::chrono::milliseconds(3));
   c.poll_state();
 

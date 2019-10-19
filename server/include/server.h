@@ -9,7 +9,8 @@ class server{
     int start(const uint16_t port);
     bool is_running(void) const;
     int start_server(void);
-    int broadcast_state(void);
+    int broadcast_state_reliable(void);
+    int broadcast_state_fast(void);
     void kill();
   private:
     ENetHost* m_host;
