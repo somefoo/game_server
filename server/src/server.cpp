@@ -44,7 +44,6 @@ int server::start_server(void) {
   //atexit(enet_deinitialize);
 
   ENetEvent event;
-  const player_action* pa;
   while (!m_kill) {
     if (enet_host_service(m_host, &event, 100) > 0) {
       switch (event.type) {
@@ -59,12 +58,9 @@ int server::start_server(void) {
         case ENET_EVENT_TYPE_RECEIVE:
           logger::verbose("Packet received from peer with ID: ", event.peer->connectID);
           logger::verbose("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
-          pa = interpret_as_packet<const player_action>(event.packet->data, event.packet->dataLength);
-          if(pa){
-            m_player_manager.update(*pa);
-          }else{
-            logger::info("Received packet which was not a player_action packet.");
-          }
+
+          m_global_state.update(event.packet->data, event.packet->dataLength);
+
           /* Clean up the packet now that we're done using it. */
           enet_packet_destroy(event.packet);
 
@@ -93,21 +89,20 @@ int server::start_server(void) {
 }
 
 int server::broadcast_state_reliable(void){
-  auto [count, data] = m_player_manager.get_state_packet();
+  auto [content, length] = m_global_state.get();
   //TODO remove fixed player count (MAX_PLAYER_COUNT)
   ENetPacket* enet_packet =
-      enet_packet_create(data, sizeof(packet<player_runtime_state<MAX_PLAYER_COUNT>>), ENET_PACKET_FLAG_RELIABLE);
+      enet_packet_create(content, length, ENET_PACKET_FLAG_RELIABLE);
   enet_host_broadcast(m_host, 0, enet_packet);
   enet_host_flush(m_host);
   //SEND AND FLUSH
   return 0;
 }
-
 int server::broadcast_state_fast(void){
-  auto [count, data] = m_player_manager.get_state_packet();
+  auto [content, length] = m_global_state.get();
   //TODO remove fixed player count (MAX_PLAYER_COUNT)
   ENetPacket* enet_packet =
-      enet_packet_create(data, sizeof(packet<player_runtime_state<MAX_PLAYER_COUNT>>), 0);
+      enet_packet_create(content, length, 0);
   enet_host_broadcast(m_host, 0, enet_packet);
   enet_host_flush(m_host);
   //SEND AND FLUSH

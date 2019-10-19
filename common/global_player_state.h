@@ -15,19 +15,20 @@ class global_player_state{
   public:
   constexpr global_player_state() = default;
   //constexpr get_players_runtime_state() const;
-  void update(const player_action& a){
-    assert(a.m_player_id < N);
-    player_runtime_data& p = m_runtime_state.m_player_runtime_data[a.m_player_id]; 
-    const float dis_delta = float(a.m_move_strength) / 255.0f;
-    const float pos_delta_x = std::cos(a.m_move_direction) * dis_delta;
-    const float pos_delta_y = std::sin(a.m_move_direction) * dis_delta;
+  void update(const player_action* const a){
+    assert(a != nullptr);
+    assert(a->m_player_id < N);
+    player_runtime_data& p = m_runtime_state.m_player_runtime_data[a->m_player_id]; 
+    const float dis_delta = float(a->m_move_strength) / 255.0f;
+    const float pos_delta_x = std::cos(a->m_move_direction) * dis_delta;
+    const float pos_delta_y = std::sin(a->m_move_direction) * dis_delta;
     const fvec2 pos_delta{pos_delta_x, pos_delta_y}; 
 
     //TODO realistic check here
-    logger::verbose("o_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
+    logger::verbose("o_Player", std::to_string(a->m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
     p.m_position += pos_delta;
-    p.m_turret_angle += a.m_turret_turn_degree;
-    logger::verbose("n_Player", std::to_string(a.m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
+    p.m_turret_angle += a->m_turret_turn_degree;
+    logger::verbose("n_Player", std::to_string(a->m_player_id), " = (", p.m_position.x, ",", p.m_position.y, ")," , p.m_turret_angle);
   }
   
   void set_data(const player_runtime_state<N>* const runtime_state_data){
@@ -39,8 +40,9 @@ class global_player_state{
   }
 
   //TODO Change name; remove runtime
-  constexpr std::pair<uint8_t, const packet<player_runtime_state<N>>*> get_state_packet(void) const{
-    return std::make_pair(m_current_count, &m_runtime_state_packet); 
+  constexpr std::pair<const packet<player_runtime_state<N>>*, size_t> get_state_packet(void) const{
+    //TODO This needs to be adaptive later!
+    return std::make_pair(&m_runtime_state_packet, sizeof(packet<player_runtime_state<N>>)); 
   }
 
   constexpr const player_runtime_state<N>* get_state(void) const{

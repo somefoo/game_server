@@ -2,7 +2,7 @@
 #include <string>
 #include <enet/enet.h>
 #include <vector>
-#include <global_player_state.h>
+#include <global_state.h>
 class server{
   public:
     server();
@@ -18,7 +18,7 @@ class server{
 
     uint8_t m_current_player_count;
     mutable uint32_t current_message_id; //Enable mutation in const functions
-    global_player_state<MAX_PLAYER_COUNT> m_player_manager;
+    global_state m_global_state;
 
 
     bool m_kill = false;
