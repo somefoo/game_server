@@ -72,7 +72,7 @@ struct packet {
   uint16_t m_type = T::PACKET_TYPE;                           
   T m_packet;
   template<typename... ARGS>
-  packet(ARGS&&... args) : m_packet(std::forward<ARGS>(args)...){}
+  constexpr packet(ARGS&&... args) : m_packet(std::forward<ARGS>(args)...){}
 };       
 
 static constexpr uint16_t get_type(const uint8_t * data, size_t length){

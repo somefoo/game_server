@@ -28,8 +28,12 @@ class global_state {
     return std::make_pair(reinterpret_cast<const uint8_t*const>(content), length);
   }
 
+  constexpr const player_runtime_state<MAX_PLAYER_COUNT>* get_player_state(void) const{
+    return m_player_state.get_state(); 
+  }
+
 
   private:
-    global_player_state<MAX_PLAYER_COUNT> m_player_state;
+    global_player_state m_player_state;
 
 };

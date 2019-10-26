@@ -79,16 +79,7 @@ int client::poll_state(){
     switch(event.type){
       case ENET_EVENT_TYPE_RECEIVE:
         logger::verbose("I received a packed!");
-        tmp = interpret_as_packet<const player_runtime_state<MAX_PLAYER_COUNT>>(event.packet->data, event.packet->dataLength);
-        if(tmp){
-          logger::verbose("CLIENT: Received packet was player_runtime_state<MAX_PLAYER_COUNT>"); 
-          m_player_manager.set_data(tmp);
-          //std::memcpy(prs, tmp, sizeof(player_runtime_state<32>));
-        }else{
-          logger::verbose("CLIENT: Received packet was NOT of expected type");
-          logger::verbose("CLIENT:   Received packed was of type:", get_type(event.packet->data, event.packet->dataLength));
-          logger::verbose("CLIENT:   But ", player_runtime_state<MAX_PLAYER_COUNT>::PACKET_TYPE, " was expected.");
-        }
+        m_global_state.set(event.packet->data, event.packet->dataLength);
         enet_packet_destroy(event.packet);
         break;
       default:
@@ -99,6 +90,6 @@ int client::poll_state(){
   return 0;
 }
 
-const player_runtime_state<MAX_PLAYER_COUNT>* client::get_state(void) const{
-  return m_player_manager.get_state();
+player_runtime_state<MAX_PLAYER_COUNT> const* client::get_player_state() const{
+  return m_global_state.get_player_state();
 }
