@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 #ADD_SUBDIRECTORY(src)
 project(game_server VERSION 0.1.0)
 #set(COMMON_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/common")
@@ -20,6 +20,7 @@ project(game_server VERSION 0.1.0)
 #endif(APPLE)
 
 ADD_SUBDIRECTORY(lib/enet)
+ADD_SUBDIRECTORY(lib/GSL)
 ADD_SUBDIRECTORY(common)
 ADD_SUBDIRECTORY(client)
 ADD_SUBDIRECTORY(server)

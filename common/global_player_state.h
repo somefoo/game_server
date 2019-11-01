@@ -12,7 +12,6 @@
 //2) Global set - The game state is set to a certain state, this state will usually be passed to each client by the server.
 class global_player_state{
   public:
-  constexpr global_player_state() = default;
   //constexpr get_players_runtime_state() const;
   void update(const player_action* const a){
     assert(a != nullptr);

@@ -15,7 +15,8 @@ file(GLOB common_SRC
 
 add_library(common STATIC ${common_SRC})
 set_target_properties(common PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} GSL)
+target_link_libraries(common PUBLIC GSL)
 
 #External view
 set(COMMON_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR} PARENT_SCOPE)

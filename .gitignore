@@ -17,3 +17,7 @@ game_server
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
 [._]sw[a-p]
+
+#YCM
+.clangd
+compile_commands.json

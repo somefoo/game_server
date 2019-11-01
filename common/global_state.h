@@ -22,7 +22,7 @@ class global_state {
     return 1;
   }
 
-  constexpr std::pair<const uint8_t* const, const size_t> get(void) const{
+  std::pair<const uint8_t* const, const size_t> get(void) const{
     //TODO Once we have more than one state, we can construct the needed packets here!
     const auto[content, length] = m_player_state.get_state_packet();
     return std::make_pair(reinterpret_cast<const uint8_t*const>(content), length);
