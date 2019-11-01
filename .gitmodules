@@ -1,3 +1,6 @@
 [submodule "lib/enet"]
 	path = lib/enet
 	url = https://github.com/somefoo/enet.git
+[submodule "lib/GSL"]
+	path = lib/GSL
+	url = https://github.com/microsoft/GSL.git
