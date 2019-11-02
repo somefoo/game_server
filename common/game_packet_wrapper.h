@@ -16,20 +16,6 @@ class game_packet_wrapper {
   game_packet_wrapper(ENetPacket* packet)
       : m_packet(std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)>(
             packet, &enet_packet_destroy)) {}
-  /*
-    ~game_packet_wrapper(){
-      enet_packet_destroy(m_packet);
-    }
-
-    //No copying
-    game_packet_wrapper(const game_packet_wrapper&) = delete;
-    //No assignment
-    auto operator=(const game_packet_wrapper&) = delete;
-    //No moving
-    game_packet_wrapper(const game_packet_wrapper&&) = delete;
-    //No move assignment
-    auto operator=(const game_packet_wrapper&&) = delete;
-  */
 
   template <typename T>
   /// Warning, can return null if requested packet type is not valid
@@ -39,6 +25,4 @@ class game_packet_wrapper {
 
  private:
   std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)> m_packet;
-  // std::unique_ptr<ENetPacket> m_packet_o;
-  // ENetPacket* m_packet;
 };
