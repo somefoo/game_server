@@ -1,4 +1,3 @@
-#include "game_packet.h"
 #include "game_packet_wrapper.h"
 
 ///Internal type is a ENet packet
@@ -14,7 +13,7 @@ struct state_base {
     underlying.set(packet);
   }
 
-  const game_packet_wrapper * get_pointer_to_internal_packet() const{
+  const game_packet_wrapper& get() const{
     T& underlying = static_cast<T&>(*this);
     return underlying.get();
   }

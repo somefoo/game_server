@@ -83,7 +83,7 @@ static constexpr uint16_t get_type(const uint8_t * data, size_t length){
 }
 
 template<typename T>
-static constexpr T* interpret_as_packet(const uint8_t * data, size_t length){
+static constexpr T* interpret_as_packet(uint8_t * data, size_t length){
   if(get_type(data, length) == T::PACKET_TYPE && length == sizeof(packet<T>)){
     return reinterpret_cast<T*>(data + sizeof(packet<T>) - sizeof(T)); 
   }
