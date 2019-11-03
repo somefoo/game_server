@@ -23,6 +23,25 @@ class game_packet_wrapper {
     return interpret_as_packet<T>(m_packet->data, m_packet->dataLength);
   }
 
+  ///TODO is const really allowed here?
+  ///TODO maybe its better not to flush here?
+  ///Broadcasts message to all peers
+  ///@param host the host which will broadcast to its peers
+  void broadcast(ENetHost& host) const{
+    enet_host_broadcast(&host, 0, m_packet.get());
+    enet_host_flush(&host);
+  }
+
+  ///TODO is const really allowed here?
+  ///TODO maybe its better not to flush here?
+  ///Sends the packet to a specific peer
+  ///@param host the host of the peer
+  ///@param target the peer that the packet will be sent to
+  void send(ENetHost& host, ENetPeer& target) const{
+    enet_peer_send(&target, 0, m_packet.get()); 
+    enet_host_flush(&host);
+  }
+
  private:
   std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)> m_packet;
 };
