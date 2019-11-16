@@ -42,6 +42,15 @@ class game_packet_wrapper {
     enet_host_flush(&host);
   }
 
+
+  /// Converts the packet content to text.
+  /// Should be used for debugging only
+  std::string get_text(){
+    char text[m_packet->dataLength + 1];
+    text[m_packet->dataLength] = '\0';
+    return std::string(text);
+  }
+
  private:
   std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)> m_packet;
 };
