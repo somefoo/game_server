@@ -27,6 +27,9 @@ add_executable(external_view_test external_view_test.cpp)
 target_link_libraries(external_view_test PRIVATE ${THREADS_LIBRARIES} common server client)
 add_test(External_View_Test external_view_test)
 
+add_executable(player_state_test player_state_test.cpp)
+target_link_libraries(player_state_test PRIVATE ${THREADS_LIBRARIES} common server client)
+add_test(Player_State_Test player_state_test)
 
 #NOT A TEST
 add_executable(start_server start_server.cpp)
