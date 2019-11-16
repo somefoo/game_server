@@ -17,9 +17,11 @@ public:
     const fvec2 pos_delta{pos_delta_x, pos_delta_y};                                                                                  
 
     //TODO realistic check here                                                                                                       
+    logger::verbose("Updating player ", a->m_player_id, " with dpos=", pos_delta_x, ",", pos_delta_y, " ddeg=", a->m_turret_turn_degree);
     player_runtime_data& p = prs->m_player_runtime_data[a->m_player_id];                                                   
     p.m_position += pos_delta;
     p.m_turret_angle += a->m_turret_turn_degree;
+    logger::verbose("Updated player ", a->m_player_id, " with pos=", p.m_position.x, ",", p.m_position.y, " deg=", p.m_turret_angle);
   }
 
   void set(const game_packet_wrapper& packet){
