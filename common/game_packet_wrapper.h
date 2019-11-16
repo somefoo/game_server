@@ -53,16 +53,16 @@ class game_packet_wrapper {
 
 
   //TODO remove
-  void print_content(){
+  void print_content() const{
     uint16_t packet_type = *reinterpret_cast<uint16_t*>(m_packet->data);
     logger::info("---");
     logger::info("type: ", packet_type);
     int counter = 0;
     for(uint8_t* i = m_packet->data + sizeof(uint16_t); i < m_packet->data + m_packet->dataLength; ++i){
       if(counter++ < 40)
-      std::cout << *i;
+      std::cout << *i << " ";
       else
-      std::cout << *i << '\n';
+      std::cout << *i << " " << '\n';
     }
     logger::info("---");
   }
