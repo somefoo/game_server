@@ -47,7 +47,7 @@ int server::start_server(void) {
   ENetEvent event;
   while (!m_kill) {
     if (enet_host_service(m_host, &event, 100) > 0) {
-      if(event.type == ENET_EVENT_TYPE_CONNECT){
+      if(event.type == ENET_EVENT_TYPE_RECEIVE){
         game_packet_wrapper gpw(std::move(event.packet)); 
         m_player_state.update(gpw);
       }
