@@ -1,7 +1,9 @@
 #include "client.h"
+#include <memory>
 #include <string>
 #include <enet/enet.h>
 #include <game_packet.h>
+#include <game_packet_wrapper.h>
 #include "logger.h"
 #include <cstring>
 
@@ -74,8 +76,15 @@ int client::send_fast(const char* content, const size_t length) const {
 
 int client::poll_state(){
   ENetEvent event;
-  const player_runtime_state<MAX_PLAYER_COUNT>* tmp; 
+  //const player_runtime_state<MAX_PLAYER_COUNT>* tmp; 
   if(enet_host_service(m_client, &event, 0) > 0){
+    if(event.type == ENET_EVENT_TYPE_RECEIVE){
+      game_packet_wrapper packet(std::move(event.packet));
+      m_player_state.set(packet);
+    }
+  }
+
+/*
     switch(event.type){
       case ENET_EVENT_TYPE_RECEIVE:
         logger::verbose("I received a packed!");
@@ -87,9 +96,10 @@ int client::poll_state(){
 
     }
   }
+  */
   return 0;
 }
 
-player_runtime_state<MAX_PLAYER_COUNT> const* client::get_player_state() const{
-  return m_global_state.get_player_state();
+player_runtime_state<MAXIMUM_PLAYER_COUNT> const* client::get_player_state() const{
+  return m_player_state.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>();
 }

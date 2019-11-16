@@ -3,7 +3,7 @@
 #include "game_packet.h"
 #include <memory>
 #include <cmath>
-constexpr uint8_t MAXIMUM_PLAYER_COUNT = 32;
+static constexpr uint8_t MAXIMUM_PLAYER_COUNT = 32;
 
 class player_state : public state_base<player_state>{
 public:
@@ -33,6 +33,6 @@ public:
   }
 
   private:
-  game_packet_wrapper m_internal_packet = make_game_packet_wrapper<player_runtime_state<MAXIMUM_PLAYER_COUNT>>();
+  game_packet_wrapper m_internal_packet = make_game_packet_wrapper<packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>>();
   player_runtime_state<MAXIMUM_PLAYER_COUNT>*const prs = m_internal_packet.get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>();
 };

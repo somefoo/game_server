@@ -23,6 +23,10 @@ add_executable(poll_test poll_test.cpp)
 target_link_libraries(poll_test PRIVATE ${THREADS_LIBRARIES} common server client)
 add_test(Poll_Test poll_test)
 
+add_executable(external_view_test external_view_test.cpp)
+target_link_libraries(external_view_test PRIVATE ${THREADS_LIBRARIES} common server client)
+add_test(External_View_Test external_view_test)
+
 
 #NOT A TEST
 add_executable(start_server start_server.cpp)
