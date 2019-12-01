@@ -59,6 +59,13 @@ int client::connect(void) {
   return 0;
 }
 
+int client::send(const game_packet_wrapper& game_packet){
+  //TODO return meaningful value
+  game_packet.send(*m_client, *m_peer);
+  m_player_state.update(game_packet);
+  return 0;
+}
+
 int client::send_reliable(const char* content, const size_t length) const {
   ENetPacket* packet =
       enet_packet_create(content, length, ENET_PACKET_FLAG_RELIABLE);
