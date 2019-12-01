@@ -28,8 +28,8 @@ class game_packet_wrapper {
   /// Broadcasts message to all peers
   ///@param host the host which will broadcast to its peers
   void broadcast(ENetHost& host) const {
-    ENetPacket copy = *m_packet.get();
-    enet_host_broadcast(&host, 0, &copy);
+    ENetPacket* copy = enet_packet_create(m_packet.get()->data, m_packet.get()->dataLength, m_packet->flags);
+    enet_host_broadcast(&host, 0, copy);
     enet_host_flush(&host);
   }
 
@@ -39,8 +39,8 @@ class game_packet_wrapper {
   ///@param host the host of the peer
   ///@param target the peer that the packet will be sent to
   void send(ENetHost& host, ENetPeer& target) const {
-    ENetPacket copy = *m_packet.get();
-    enet_peer_send(&target, 0, &copy);
+    ENetPacket* copy = enet_packet_create(m_packet.get()->data, m_packet.get()->dataLength, m_packet->flags);
+    enet_peer_send(&target, 0, copy);
     enet_host_flush(&host);
   }
 
