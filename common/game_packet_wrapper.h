@@ -91,7 +91,7 @@ game_packet_wrapper make_game_packet_wrapper(ARGS&&... args) {
     // is dangerous.
     std::unique_ptr obj = std::make_unique<packet<PK>>(std::forward<ARGS>(args)...);
     // NOTE: data is packet is now NOT initilised
-    ENetPacket* const p = enet_packet_create(obj.get(), sizeof(PK), 0);
+    ENetPacket* const p = enet_packet_create(obj.get(), sizeof(packet<PK>), 0);
     auto ret = std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)>(
         p, &enet_packet_destroy);
     return game_packet_wrapper(std::move(ret));
