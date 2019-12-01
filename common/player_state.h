@@ -35,6 +35,6 @@ public:
   }
 
   private:
-  game_packet_wrapper m_internal_packet = make_game_packet_wrapper<packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>>();
+  game_packet_wrapper m_internal_packet = make_game_packet_wrapper<player_runtime_state<MAXIMUM_PLAYER_COUNT>>();
   player_runtime_state<MAXIMUM_PLAYER_COUNT>*const prs = m_internal_packet.get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>();
 };
