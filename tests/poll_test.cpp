@@ -18,14 +18,15 @@ void run_server(void){
 void run_client(void){
   client_fail = c.connect();
   for(int i = 0; i < 32; ++i){
-    packet<player_action> pss(i, 3.14f, 2.14f, 127,1);
-    client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(pss));
+      auto ps = make_game_packet_wrapper<player_action>(i, 3.14f, 2.14f, 127,1);
+        client_fail |= c.send(ps);
   }
 
   for(int i = 0; i < 32; ++i){
-    packet<player_action> pss(i, 24.12f, 45.14f, 255,0);
-    client_fail |= c.send_reliable(reinterpret_cast<char *>(&pss),sizeof(pss));
+      auto ps = make_game_packet_wrapper<player_action>(i, 24.12f, 45.14f, 255,0);
+        client_fail |= c.send(ps);
   }
+
 }
 
 int main(){
