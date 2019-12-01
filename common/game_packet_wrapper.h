@@ -11,11 +11,17 @@ class game_packet_wrapper {
   /// Careful, transfert of ownership here!
   game_packet_wrapper(
       std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)> packet)
-      : m_packet(std::move(packet)) {}
+      : m_packet(std::move(packet)) {
+        //Prevent deallocation
+        m_packet->referenceCount++;
+      }
   /// Careful, transfert of ownership here!
   game_packet_wrapper(ENetPacket* packet)
       : m_packet(std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)>(
-            packet, &enet_packet_destroy)) {}
+            packet, &enet_packet_destroy)) {
+        //Prevent deallocation
+        m_packet->referenceCount++;
+      }
 
   template <typename T>
   /// Warning, can return null if requested packet type is not valid
@@ -28,8 +34,7 @@ class game_packet_wrapper {
   /// Broadcasts message to all peers
   ///@param host the host which will broadcast to its peers
   void broadcast(ENetHost& host) const {
-    ENetPacket* copy = enet_packet_create(m_packet.get()->data, m_packet.get()->dataLength, m_packet->flags);
-    enet_host_broadcast(&host, 0, copy);
+    enet_host_broadcast(&host, 0, m_packet.get());
     enet_host_flush(&host);
   }
 
@@ -39,8 +44,7 @@ class game_packet_wrapper {
   ///@param host the host of the peer
   ///@param target the peer that the packet will be sent to
   void send(ENetHost& host, ENetPeer& target) const {
-    ENetPacket* copy = enet_packet_create(m_packet.get()->data, m_packet.get()->dataLength, m_packet->flags);
-    enet_peer_send(&target, 0, copy);
+    enet_peer_send(&target, 0, m_packet.get());
     enet_host_flush(&host);
   }
 
