@@ -13,7 +13,7 @@ struct state_base {
     underlying.set(packet);
   }
 
-  const game_packet_wrapper& get() const{
+  constexpr const game_packet_wrapper& get() const{
     T& underlying = static_cast<T&>(*this);
     return underlying.get();
   }

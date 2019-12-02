@@ -8,6 +8,9 @@
 #define PLAYER_ACTION 130
 #define ALL_PLAYER_STATE 131
 #define PLAYER_STATE_START 1024
+#define PACKET_GAME_STATE_START 2048
+
+
 
 //////////////// CLIENT -> SERVER ////////////////////////
 // https://www.gabrielgambetta.com/client-server-game-architecture.html
@@ -89,3 +92,18 @@ static constexpr T* interpret_as_packet(uint8_t * data, size_t length){
   }
   return nullptr;
 }
+
+
+
+
+
+
+
+
+
+
+//////////////// WHOLE GAME ////////////////////////
+struct game_state {
+  player_runtime_state<32> m_player_runtime_state;
+  player_extra_state<32> m_player_extra_state;
+};

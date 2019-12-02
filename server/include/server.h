@@ -2,7 +2,7 @@
 #include <string>
 #include <enet/enet.h>
 #include <vector>
-#include <player_state.h>
+#include <game.h>
 class server{
   public:
     server();
@@ -18,7 +18,7 @@ class server{
 
     uint8_t m_current_player_count;
     mutable uint32_t current_message_id; //Enable mutation in const functions
-    player_state m_player_state;
+    game m_game;
 
 
     bool m_kill = false;

@@ -30,7 +30,7 @@ public:
     std::memcpy(prs, p, sizeof(*p));
   }
 
-  const game_packet_wrapper& get() const{
+  constexpr const game_packet_wrapper& get() const{
     return m_internal_packet;
   }
 

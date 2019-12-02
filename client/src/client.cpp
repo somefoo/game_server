@@ -61,8 +61,7 @@ int client::connect(void) {
 
 int client::send(const game_packet_wrapper& game_packet){
   //TODO return meaningful value
-  game_packet.send(*m_client, *m_peer);
-  m_player_state.update(game_packet);
+  m_game.update_and_send(game_packet, *m_client, *m_peer);
   return 0;
 }
 
@@ -72,7 +71,7 @@ int client::poll_state(){
   if(enet_host_service(m_client, &event, 0) > 0){
     if(event.type == ENET_EVENT_TYPE_RECEIVE){
       game_packet_wrapper packet(std::move(event.packet));
-      m_player_state.set(packet);
+      m_game.set(packet);
     }
   }
 
@@ -92,6 +91,6 @@ int client::poll_state(){
   return 0;
 }
 
-player_runtime_state<MAXIMUM_PLAYER_COUNT> const* client::get_player_state() const{
-  return m_player_state.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>();
+const game_state client::get_game_state() const{
+  return m_game.get();
 }

@@ -49,7 +49,7 @@ int server::start_server(void) {
     if (enet_host_service(m_host, &event, 100) > 0) {
       if(event.type == ENET_EVENT_TYPE_RECEIVE){
         game_packet_wrapper gpw(std::move(event.packet)); 
-        m_player_state.update(gpw);
+        m_game.update(gpw);
       }
 
 
@@ -96,12 +96,12 @@ int server::start_server(void) {
 }
 
 int server::broadcast_state_reliable(void){
-  m_player_state.get().broadcast(*m_host);
+  m_game.broadcast_state(*m_host);
   //SEND AND FLUSH
   return 0;
 }
 int server::broadcast_state_fast(void){
-  m_player_state.get().broadcast(*m_host);
+  m_game.broadcast_state(*m_host);
   //SEND AND FLUSH
   return 0;
 }
