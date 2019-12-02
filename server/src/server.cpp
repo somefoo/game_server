@@ -62,7 +62,7 @@ int server::start_server(void) {
 
           break;
 
-//        case ENET_EVENT_TYPE_RECEIVE:
+        case ENET_EVENT_TYPE_RECEIVE:
 //          logger::verbose("Packet received from peer with ID: ", event.peer->connectID);
 //          logger::verbose("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
 //
@@ -71,7 +71,7 @@ int server::start_server(void) {
 //          /* Clean up the packet now that we're done using it. */
 //          enet_packet_destroy(event.packet);
 //
-//          break;
+          break;
 //
         case ENET_EVENT_TYPE_DISCONNECT:
           //printf("%s disconected.\n", event.peer->data);

@@ -25,5 +25,5 @@ const game_state game::get() const{
   //gs.m_player_runtime_state = *(ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>());
   //return gs;
   //TODO better?
-  return game_state{*(ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>()), 0};
+  return game_state{*(ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>()), {}};
 }
