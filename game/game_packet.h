@@ -4,7 +4,6 @@
 #include <cstring>
 #include <optional>
 #include "logger.h"
-#define PACKET_ERROR 1
 #define PLAYER_ACTION 130
 #define ALL_PLAYER_STATE 131
 #define PLAYER_STATE_START 1024
@@ -70,37 +69,6 @@ struct player_extra_state{
 //namespace{
 //  enum packet_type : uint16_t{Error=0,Player_State=1};
 //}
-template<typename T>       
-struct packet {                              
-  uint16_t m_type = T::PACKET_TYPE;                           
-  T m_packet;
-  template<typename... ARGS>
-  constexpr packet(ARGS&&... args) : m_packet(std::forward<ARGS>(args)...){}
-};       
-
-static constexpr uint16_t get_type(const uint8_t * data, size_t length){
-  if(length < sizeof(uint16_t)) return PACKET_ERROR;
-  //TODO Do checking if correct
-  const uint16_t * const ret = reinterpret_cast<const uint16_t*>(data);
-  return *ret;
-}
-
-template<typename T>
-static constexpr T* interpret_as_packet(uint8_t * data, size_t length){
-  if(get_type(data, length) == T::PACKET_TYPE && length == sizeof(packet<T>)){
-    return reinterpret_cast<T*>(data + sizeof(packet<T>) - sizeof(T)); 
-  }
-  return nullptr;
-}
-
-
-
-
-
-
-
-
-
 
 //////////////// WHOLE GAME ////////////////////////
 struct game_state {

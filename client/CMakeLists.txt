@@ -19,7 +19,7 @@ set_target_properties(client PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(client PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 #target_include_directories(client PRIVATE enet)
 #target_include_directories(client PRIVATE common)
-target_link_libraries(client PUBLIC enet PRIVATE common)
+target_link_libraries(client PUBLIC enet game PRIVATE common)
 
 get_target_property(cheese client INCLUDE_DIRECTORIES)
 message(STATUS ${cheese})

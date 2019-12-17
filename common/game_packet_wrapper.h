@@ -2,7 +2,31 @@
 #include <enet/enet.h>
 #include <memory>
 #include <optional>
-#include "game_packet.h"
+#include <logger.h>
+static constexpr uint16_t PACKET_ERROR = 1;
+
+template<typename T>
+struct packet {
+  uint16_t m_type = T::PACKET_TYPE;
+  T m_packet;
+  template<typename... ARGS>
+  constexpr packet(ARGS&&... args) : m_packet(std::forward<ARGS>(args)...){}
+};
+
+static constexpr uint16_t get_type(const uint8_t * data, size_t length){
+  if(length < sizeof(uint16_t)) return PACKET_ERROR;
+  //TODO Do checking if correct
+  const uint16_t * const ret = reinterpret_cast<const uint16_t*>(data);
+  return *ret;
+}
+
+template<typename T>
+static constexpr T* interpret_as_packet(uint8_t * data, size_t length){
+  if(get_type(data, length) == T::PACKET_TYPE && length == sizeof(packet<T>)){
+    return reinterpret_cast<T*>(data + sizeof(packet<T>) - sizeof(T));
+  }
+  return nullptr;
+}
 /// Owner of the ENet packet, cleans up all packets after going out of scope
 /// Explicit use of enet_packet_destroy is not needed if this object owns the
 /// pointer
@@ -97,3 +121,5 @@ game_packet_wrapper make_game_packet_wrapper(ARGS&&... args) {
     return game_packet_wrapper(std::move(ret));
     // NOTE: Copy data from standard initilised PK to enet_packet
 }
+
+

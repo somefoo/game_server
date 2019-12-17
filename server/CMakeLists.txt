@@ -26,4 +26,4 @@ target_include_directories(server PUBLIC ${THREADS_INCLUDE_DIRS})
 #My libs
 target_include_directories(server PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-target_link_libraries(server PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} enet common client)
+target_link_libraries(server PUBLIC game PRIVATE ${CMAKE_THREAD_LIBS_INIT} ${OpenMP_CXX_LIBRARIES} enet common client)
