@@ -18,7 +18,6 @@ target_sources(server
     "src/server.cpp"
   PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/include/server.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/player_state_manager.h"
   )
 set_target_properties(server PROPERTIES LINKER_LANGUAGE CXX)
 
