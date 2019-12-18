@@ -97,7 +97,7 @@ int server::start_server(void) {
   {
     {
     using namespace std::chrono_literals;
-    std::this_thread::sleep_for(30ms);
+    std::this_thread::sleep_for(66ms);
     }
     broadcast_state_fast();
   }
