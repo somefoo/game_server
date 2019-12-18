@@ -72,6 +72,7 @@ int client::poll_state(){
     if(event.type == ENET_EVENT_TYPE_RECEIVE){
       game_packet_wrapper packet(std::move(event.packet));
       m_game.set(packet);
+      return 1;
     }
   }
 
