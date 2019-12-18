@@ -1,5 +1,6 @@
 #include <enet/enet.h>
 #include <iostream>
+#include <thread>
 #include "server.h"
 #include "logger.h"
 #include "game_packet.h"
@@ -43,53 +44,64 @@ int server::start_server(void) {
   start(1234);
 
   //atexit(enet_deinitialize);
+  #pragma omp parallel sections
+  {
+    #pragma omp section
+    {
+      ENetEvent event;
+      while (!m_kill) {
+        if (enet_host_service(m_host, &event, 100) > 0) {
+          if(event.type == ENET_EVENT_TYPE_RECEIVE){
+            game_packet_wrapper gpw(std::move(event.packet)); 
+            m_game.update(gpw);
+          }
 
-  ENetEvent event;
-  while (!m_kill) {
-    if (enet_host_service(m_host, &event, 100) > 0) {
-      if(event.type == ENET_EVENT_TYPE_RECEIVE){
-        game_packet_wrapper gpw(std::move(event.packet)); 
-        m_game.update(gpw);
-      }
 
+          switch (event.type) {
+            case ENET_EVENT_TYPE_CONNECT:
+              logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
+              logger::info("Client connect ID: ", event.peer->connectID);
+              /* Store any relevant client information here. */
+              event.peer->data = m_player1;
 
-      switch (event.type) {
-        case ENET_EVENT_TYPE_CONNECT:
-          logger::info("Client connected from: ", event.peer->address.host, ":", event.peer->address.port);
-          logger::info("Client connect ID: ", event.peer->connectID);
-          /* Store any relevant client information here. */
-          event.peer->data = m_player1;
+              break;
 
-          break;
+            case ENET_EVENT_TYPE_RECEIVE:
+    //          logger::verbose("Packet received from peer with ID: ", event.peer->connectID);
+    //          logger::verbose("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
+    //
+    //          m_global_state.update(event.packet->data, event.packet->dataLength);
+    //
+    //          /* Clean up the packet now that we're done using it. */
+    //          enet_packet_destroy(event.packet);
+    //
+              break;
+    //
+            case ENET_EVENT_TYPE_DISCONNECT:
+              //printf("%s disconected.\n", event.peer->data);
+              logger::info(event.peer->data, "disconnected.");
 
-        case ENET_EVENT_TYPE_RECEIVE:
-//          logger::verbose("Packet received from peer with ID: ", event.peer->connectID);
-//          logger::verbose("Packet type: ", get_type(event.packet->data,event.packet->dataLength));
-//
-//          m_global_state.update(event.packet->data, event.packet->dataLength);
-//
-//          /* Clean up the packet now that we're done using it. */
-//          enet_packet_destroy(event.packet);
-//
-          break;
-//
-        case ENET_EVENT_TYPE_DISCONNECT:
-          //printf("%s disconected.\n", event.peer->data);
-          logger::info(event.peer->data, "disconnected.");
+              /* Reset the peer's client information. */
 
-          /* Reset the peer's client information. */
-
-          event.peer->data = NULL;
-          break;
-        case ENET_EVENT_TYPE_NONE:
-          break;
+              event.peer->data = NULL;
+              break;
+            case ENET_EVENT_TYPE_NONE:
+              break;
+          }
+        }
+        //TEMP SOLUTION
+        // Break if something happens HERE!!
       }
     }
-    //TEMP SOLUTION
+  #pragma omp section
+  {
+    {
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(30ms);
+    }
     broadcast_state_fast();
-    // Break if something happens HERE!!
   }
-
+  }
   enet_host_destroy(m_host);
   enet_deinitialize();
   return 0;
