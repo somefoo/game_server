@@ -44,7 +44,7 @@ int server::start_server(void) {
   start(1234);
 
   //atexit(enet_deinitialize);
-  #pragma omp parallel sections
+  #pragma omp parallel sections num_threads(2)
   {
     #pragma omp section
     {
@@ -93,15 +93,17 @@ int server::start_server(void) {
         // Break if something happens HERE!!
       }
     }
-  #pragma omp section
-  {
+
+    #pragma omp section
     {
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(66ms);
+      using namespace std::chrono_literals;
+      while (!m_kill) {
+          std::this_thread::sleep_for(66ms);
+        broadcast_state_fast();
+      }
     }
-    broadcast_state_fast();
   }
-  }
+
   enet_host_destroy(m_host);
   enet_deinitialize();
   return 0;
