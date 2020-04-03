@@ -1,9 +1,13 @@
 #pragma once
 #include "game_packet_wrapper.h"
-#include "player_state.h"
+#include "game_packet.h"
+#include "basic_state.h"
+#include <vector>
 
 class game{
   public:
+    //Standard constructor
+    game();
     //Update the local state only
     void update(const game_packet_wrapper& packet);
     //Update the local state and send 
@@ -15,5 +19,5 @@ class game{
     //Returns the state of the whole game
     const game_state get() const;
   private:
-    player_state ps;
+    std::vector<std::unique_ptr<base_state>> m_base_states;
 };

@@ -16,7 +16,7 @@ int server::start(const uint16_t port){
   address.host = ENET_HOST_ANY;
   address.port = port;
   //enet_address_set_host(&address, "localhost");
-  m_host = enet_host_create(&address, MAXIMUM_PLAYER_COUNT, 2, 0, 0);
+  m_host = enet_host_create(&address, 32 /*MAX_PLAYER_COUNT*/, 2, 0, 0);
   if(!m_host){
     logger::error("Failed to create host on port ", port); 
     return EXIT_FAILURE;

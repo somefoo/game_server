@@ -14,7 +14,7 @@ class server{
     void kill();
   private:
     ENetHost* m_host;
-    ENetPeer* m_clients[MAXIMUM_PLAYER_COUNT];
+    ENetPeer* m_clients[32 /*MAX_PLAYER_COUNT*/];
 
     uint8_t m_current_player_count;
     mutable uint32_t current_message_id; //Enable mutation in const functions

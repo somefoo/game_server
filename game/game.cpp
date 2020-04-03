@@ -1,21 +1,36 @@
 #include "game_packet_wrapper.h"
+#include "player_state.h"
 #include "game.h"
 
+game::game(){
+  std::unique_ptr<base_state> ps_ptr = std::make_unique<player_state>();
+  m_base_states.push_back(std::move(ps_ptr));
+}
+
 void game::update(const game_packet_wrapper& packet){
-  ps.update(packet);
+  for (auto& state : m_base_states){
+    state->update(packet);
+  }
 }
 
 void game::update_and_send(const game_packet_wrapper& packet, ENetHost& host, ENetPeer& target){
-  update(packet);
+  for (auto& state : m_base_states){
+    state->update(packet);
+  }
   packet.send(host, target);
 }
 
 void game::set(const game_packet_wrapper& packet){
-  ps.set(packet);
+  for (auto& state : m_base_states){
+    state->set(packet);
+  }
 }
 
 int game::broadcast_state(ENetHost& host) const{
-  ps.get().broadcast(host);
+  for (auto& state : m_base_states){
+    state->get().broadcast(host);
+  }
+
   return 0;
 }
 
@@ -25,5 +40,6 @@ const game_state game::get() const{
   //gs.m_player_runtime_state = *(ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>());
   //return gs;
   //TODO better?
-  return game_state{*(ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>()), {}};
+  //TODO This has to be done differently
+  return game_state{*(m_base_states[0]->get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>()), {}};
 }
