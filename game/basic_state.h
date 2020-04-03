@@ -17,8 +17,11 @@ struct state_data {
 
 class base_state {
  public:
+  /// Update the state if the game packet is relevant
   virtual void update(const game_packet_wrapper& packet) = 0;
+  /// Set the state if the game packet is relevant
   virtual void set(const game_packet_wrapper& packet) = 0;
+  /// Returns the game packet
   virtual const game_packet_wrapper& get() const = 0;
   virtual ~base_state(){};
 };
