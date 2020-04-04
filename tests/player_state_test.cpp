@@ -5,6 +5,7 @@ player_state ps;
 int main(){
   game_packet_wrapper gpw = make_game_packet_wrapper<player_action>(0, 0.0f, 3.1415, 255, 1);
   gpw.print_content();
+  /*
   ps.update(gpw);
 
   auto* prs = ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>(); 
@@ -26,6 +27,7 @@ int main(){
   logger::info("m_player_id            : ",(int) prt.m_player_id);
   logger::info("m_turrent_angle        : ", prt.m_turret_angle);
   logger::info("m_current_projectiles  : ",(int) prt.m_current_projectiles);
+  */
   return 0;
 
 }

@@ -9,13 +9,13 @@ game::game(){
 
 void game::update(const game_packet_wrapper& packet){
   for (auto& state : m_base_states){
-    state->update(packet);
+    state->offer(packet);
   }
 }
 
 void game::update_and_send(const game_packet_wrapper& packet, ENetHost& host, ENetPeer& target){
   for (auto& state : m_base_states){
-    state->update(packet);
+    state->offer(packet);
   }
   packet.send(host, target);
 }

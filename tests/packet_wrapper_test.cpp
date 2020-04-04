@@ -34,7 +34,7 @@ int main(){
 
 
   player_state ps;
-  ps.update(from_enet_packet);
+  ps.offer(from_enet_packet);
   if(ps.get().get_packet<player_runtime_state<MAXIMUM_PLAYER_COUNT>>() == nullptr){
     logger::error("player_state broke after update.");
     return 1;
