@@ -3,7 +3,7 @@
 
 player_state ps;
 int main(){
-  game_packet_wrapper gpw = make_game_packet_wrapper<player_action>(0, 0.0f, 3.1415, 255, 1);
+  game_packet_wrapper gpw = make_game_packet_wrapper<player_action>(player_action{0, 0.0f, 3.1415, 255, 1});
   gpw.print_content();
   /*
   ps.update(gpw);

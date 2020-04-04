@@ -5,7 +5,7 @@
 
 int main(){
   //char data[]{'h','e','l','l','o'};
-  packet<player_action> content(0,0,0,42,0);
+  packet<player_action> content(player_action{0,0,0,42,0});
   ENetPacket* enet_packet = enet_packet_create(&content, sizeof content, 0);
   
   game_packet_wrapper from_enet_packet(enet_packet);

@@ -17,13 +17,13 @@ static constexpr uint8_t MAXIMUM_PLAYER_COUNT = 32;
 
 struct player_action {
   constexpr const static uint16_t PACKET_TYPE = PLAYER_ACTION;
-  player_action(uint8_t pi, float md, float ttd, uint8_t ms, uint8_t shoot){
+  /*player_action(uint8_t pi, float md, float ttd, uint8_t ms, uint8_t shoot){
     m_player_id = pi;
     m_move_direction = md;
     m_turret_turn_degree = ttd;
     m_move_strength = ms;
     m_shoot = shoot;//CAREFUL
-  }
+  }*/
   uint8_t m_player_id;
   // angle relative to east
   float m_move_direction;
