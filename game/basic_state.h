@@ -2,15 +2,15 @@
 #include <cstring>
 #include "game_packet_wrapper.h"
 
-template <typename DATA, int ID>
+template <typename DATA, uint16_t UNIQUE_ID>
 struct stateless_data {
-  constexpr const static uint16_t PACKET_TYPE = ID;
+  constexpr const static uint16_t PACKET_TYPE = UNIQUE_ID;
   DATA m_data;
 };
 
-template <typename DATA, int ID>
+template <typename DATA, uint16_t UNIQUE_ID>
 struct state_data {
-  constexpr const static uint16_t PACKET_TYPE = ID;
+  constexpr const static uint16_t PACKET_TYPE = UNIQUE_ID;
   uint64_t m_state = 0;
   DATA m_data;
 };
