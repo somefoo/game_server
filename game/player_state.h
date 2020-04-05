@@ -14,9 +14,9 @@
 
 static constexpr uint8_t MAXIMUM_PLAYER_COUNT = 32;
 
-
 struct player_action {
   constexpr const static uint16_t PACKET_TYPE = PLAYER_ACTION;
+  constexpr const static transfer_type TRANSFER_TYPE = transfer_type::fast;
   /*player_action(uint8_t pi, float md, float ttd, uint8_t ms, uint8_t shoot){
     m_player_id = pi;
     m_move_direction = md;
@@ -49,6 +49,7 @@ struct player_runtime_data {
 template <uint8_t N>
 struct player_runtime_state{
   constexpr const static uint16_t PACKET_TYPE = RUNTIME_STATE_START + N - 1;
+  constexpr const static transfer_type TRANSFER_TYPE = transfer_type::fast;
   player_runtime_data m_player_runtime_data[N];
 };
 

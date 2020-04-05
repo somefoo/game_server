@@ -2,17 +2,23 @@
 #include <cstring>
 #include "game_packet_wrapper.h"
 
-template <typename DATA, uint16_t UNIQUE_ID>
-struct stateless_data {
+template <uint16_t UNIQUE_ID, transfer_type TRANSFER>
+struct container_header {
   constexpr const static uint16_t PACKET_TYPE = UNIQUE_ID;
-  DATA m_data;
+  constexpr const static transfer_type TRANSFER_TYPE = TRANSFER;
 };
 
-template <typename DATA, uint16_t UNIQUE_ID>
-struct state_data {
+template <typename DATA, transfer_type TRANSFER, uint16_t UNIQUE_ID>
+struct stateless_data_container {
   constexpr const static uint16_t PACKET_TYPE = UNIQUE_ID;
+  constexpr const static transfer_type TRANSFER_TYPE = TRANSFER;
+};
+
+template <typename DATA, transfer_type TRANSFER, uint16_t UNIQUE_ID>
+struct state_data_container {
+  constexpr const static uint16_t PACKET_TYPE = UNIQUE_ID;
+  constexpr const static transfer_type TRANSFER_TYPE = TRANSFER;
   uint64_t m_state = 0;
-  DATA m_data;
 };
 
 class base_state {
@@ -45,7 +51,7 @@ class state : public base_state {
   virtual void update(const UPDATE_DATA& update_data) = 0;
 
  private:
-  game_packet_wrapper m_state_packet = make_game_packet_wrapper<STATE_DATA>();
+  game_packet_wrapper m_state_packet = make_game_packet_wrapper<STATE_DATA>(STATE_DATA::TRANSFER_TYPE);
 
  protected:
   STATE_DATA& m_state = *m_state_packet.get_packet<STATE_DATA>();

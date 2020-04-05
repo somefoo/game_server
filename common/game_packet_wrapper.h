@@ -4,6 +4,7 @@
 #include <optional>
 #include <logger.h>
 static constexpr uint16_t PACKET_ERROR = 1;
+enum transfer_type {safe = ENET_PACKET_FLAG_RELIABLE, fast = 0};
 
 template<typename T>
 struct packet {
@@ -105,8 +106,9 @@ class game_packet_wrapper {
 ///@tparam PK the type of the packet that the ENet packet will hold
 ///@tparam ARGS The type of the argument list which will be used to initilise PK
 ///@param args The argument list which will be used to initilise PK 
+///NOTE, DEPRECATED!
 template <typename PK, typename... ARGS>
-game_packet_wrapper make_game_packet_wrapper(ARGS&&... args) {
+[[deprecated]] game_packet_wrapper make_game_packet_wrapper(ARGS&&... args) {
     // I am creating a temporary object of type PK to use for initilisation of
     // enet packet data. The object will be deleted after funciton call.
     // I am aware this is ugly, but as enet is a C library, and this initiliser
@@ -123,3 +125,23 @@ game_packet_wrapper make_game_packet_wrapper(ARGS&&... args) {
 }
 
 
+///Creates a game_packet_wrapper from holding an ENet packet of type specified by PK
+///@tparam PK the type of the packet that the ENet packet will hold
+///@tparam ARGS The type of the argument list which will be used to initilise PK
+///@param args The argument list which will be used to initilise PK 
+template <typename PK, typename... ARGS>
+game_packet_wrapper make_game_packet_wrapper(transfer_type tp,ARGS&&... args) {
+    // I am creating a temporary object of type PK to use for initilisation of
+    // enet packet data. The object will be deleted after funciton call.
+    // I am aware this is ugly, but as enet is a C library, and this initiliser
+    // is rarely used, the overhead is acceptable.
+    // It is worth noting, ENet uses a custom allocator, so pointer swapping
+    // is dangerous.
+    std::unique_ptr obj = std::make_unique<packet<PK>>(std::forward<ARGS>(args)...);
+    // NOTE: data is packet is now NOT initilised
+    ENetPacket* const p = enet_packet_create(obj.get(), sizeof(packet<PK>), tp);
+    auto ret = std::unique_ptr<ENetPacket, decltype(&enet_packet_destroy)>(
+        p, &enet_packet_destroy);
+    return game_packet_wrapper(std::move(ret));
+    // NOTE: Copy data from standard initilised PK to enet_packet
+}
